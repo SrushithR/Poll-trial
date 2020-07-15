@@ -1,0 +1,8 @@
+site_name: Simple Polling App
+theme:
+  name: material
+  palette:
+    primary: orange
+    scheme: preference
+  features:
+    - tabs
