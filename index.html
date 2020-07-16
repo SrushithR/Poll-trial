@@ -343,6 +343,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#destroy-the-app" class="md-nav__link">
+    Destroy the App
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -533,6 +540,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destroy-the-app" class="md-nav__link">
+    Destroy the App
+  </a>
   
 </li>
       
@@ -1224,8 +1238,8 @@ AppSync Mock endpoint is running at http://192.168.1.9:20002
 
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-</div>
 <p>Don't have any other queries/mutations in the GraphiQL editor while testing for subscriptions. Always run the subscriptions in a different editor and make sure there are no other queries/mutations</p>
+</div>
 <p>Running the <code>upVote</code> mutation will see a subscription result on the second tab</p>
 <h2 id="integrating-the-graphql-api-with-the-ui-code">Integrating the GraphQL API with the UI code</h2>
 <p>Copy the code under <code>src</code>, <code>public</code> folders and <code>package.json</code>, <code>postcss.config.json</code> and <code>tailwind.js</code> from the GitHub repo files into your <code>src</code> folder. To setup the UI project and get it up and running, run the following commands: </p>
@@ -1244,6 +1258,13 @@ AppSync Mock endpoint is running at http://192.168.1.9:20002
 <p class="admonition-title">Success</p>
 <p>You have successfully created a real time polling application that can be used to create, and share polls and see the results in real time!</p>
 </div>
+<h2 id="destroy-the-app">Destroy the App</h2>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+</div>
+<p>Although, the entire application uses services that have free tier, it is advisable to destory the stack if not being consumed and to do so, run the following command:</p>
+<pre><code>amplify destroy
+</code></pre>
                 
               
               
