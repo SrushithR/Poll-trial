@@ -592,10 +592,14 @@
 </ul>
 <h2 id="installation">Installation</h2>
 <p>Install the Amplify CLI using the following command:</p>
-<p><code>npm install -g @aws-amplify/cli</code></p>
+<pre><code>npm install -g @aws-amplify/cli
+</code></pre>
+
 <h3 id="configuring-amplify-cli">Configuring Amplify CLI</h3>
 <p>To configure Amplify CLI on your machine, run the following command:</p>
-<p><code>amplify configure</code></p>
+<pre><code>amplify configure
+</code></pre>
+
 <p>On running the above command, you will be asked to login to your AWS console. On logging in, Amplify CLI will create an IAM user</p>
 <pre><code>Specify the AWS Region
 ? region:  # Your preferred region
@@ -615,7 +619,7 @@ Successfully set up the new user.
 </code></pre>
 
 <h2 id="initialising-a-new-project">Initialising A New Project</h2>
-<pre><code class="bash">$ amplify init
+<pre><code>amplify init
 </code></pre>
 
 <pre><code>Enter a name for the project: __realtimepoll__
@@ -633,11 +637,11 @@ Please choose the profile you want to use: __amplify__
 
 <p>Now, the AWS Amplify CLI has iniatilized a new project &amp; you will see a new folder: <strong>amplify</strong> &amp; a new file called <code>aws-exports.js</code> in the <strong>src</strong> directory. These files hold the project configuration.</p>
 <p>To view the status of the amplify project at any time, you can run the Amplify <code>status</code> command:</p>
-<pre><code class="sh">$ amplify status
+<pre><code>amplify status
 </code></pre>
 
 <h2 id="adding-a-graphql-api">Adding a GraphQL API</h2>
-<pre><code class="sh">$ amplify add api
+<pre><code class="sh">amplify add api
 
 ? Please select from one of the above mentioned services: GraphQL
 ? Provide API name: ConferenceAPI
@@ -666,12 +670,14 @@ enum PollType {
 }
 </code></pre>
 
-<p>The GraphQL schema will create a GraphQL type <code>Poll</code> with the following fields:
-* id - a non-nullable field to store the id of the poll
-* name - a non-nullable name of the poll
-* type - type of poll options (candidates), resolving to an enum with values - <code>image</code> and <code>text</code>
-* itemType - type of poll
-* createdAt - the timestamp at which the poll was created</p>
+<p>The GraphQL schema will create a GraphQL type <code>Poll</code> with the following fields:</p>
+<ul>
+<li>id - a non-nullable field to store the id of the poll</li>
+<li>name - a non-nullable name of the poll</li>
+<li>type - type of poll options (candidates), resolving to an enum with values - <code>image</code> and <code>text</code></li>
+<li>itemType - type of poll</li>
+<li>createdAt - the timestamp at which the poll was created</li>
+</ul>
 <p>Run <code>amplify status</code> to check the status of the application. This will now reflect the addition of the API</p>
 <p>!!! </p>
 <p>Run <code>amplify push</code> to deploy the resources (API and DynamoDB tables) to the AWS cloud. Select appropriate options as shown below:</p>
@@ -869,7 +875,7 @@ type Subscription {
 
 <p>Amplify automatically enables pagination, filtering capability for the get and list queries</p>
 <h2 id="understanding-auto-generated-resolvers">Understanding auto generated resolvers</h2>
-<p>Amplify also auto generates resolvers for all of the queries and mutations, and can be seen under the <code>/amplify/#current-cloud-backend/&lt;name&gt;/build/resolvers/</code> folder </p>
+<p>Amplify also auto generates resolvers for all of the queries and mutations, and can be seen under the <code>/amplify/#current-cloud-backend/&lt;api-name&gt;/build/resolvers/</code> folder </p>
 <h2 id="creating-a-new-poll">Creating a new Poll</h2>
 <p>Run <code>amplify api console</code> to open the AppSync's <code>Queries</code> section in the AWS console. This can be used to run queries, mutations and subscriptions.</p>
 <p>Execute the following query to get a list of all the polls:</p>
