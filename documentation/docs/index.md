@@ -1,8 +1,16 @@
 ## Simple Real time Polling Application
 
-TODO
+!!! note
+    This application was built by [Nader Dabit](https://twitter.com/dabit3). Thank you for your amazing contribution to the Serverless and Amplify community!
+    
+In this workshop, we will be building a simple real time polling application using GraphQL APIs. By the end of the workshop, you will be able to create polls, upvote candidates and share the poll link to see the power of GraphQL subscriptions in action
 
-## List of services consumed
+<img src="https://user-images.githubusercontent.com/23396903/87696333-47240000-c7ae-11ea-8ac8-fa543d145bce.png">
+
+!!! caution
+    This workshop is built on the assumption that you have basic understand of working with AWS and GraphQL   
+
+### List of services consumed
 1. [AWS Amplify](https://aws.amazon.com/amplify/) - a set of tools and services that enables mobile and front-end web developers to build secure, scalable full stack applications 
 2. [AWS AppSync](https://aws.amazon.com/appsync/) - a managed GraphQL service on AWS 
 3. [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) - a  key-value and document database that delivers single-digit millisecond performance at any scale
@@ -11,18 +19,23 @@ TODO
 
 * Install [Node.js](https://nodejs.org/en/download/) and [NPM](https://www.npmjs.com/get-npm)
 * [Create AWS Account](https://portal.aws.amazon.com/billing/signup#/start) if you already don't have one. This workshop utilises most of the resources that fall under [AWS free tier](https://aws.amazon.com/free/)
+* Install [Java](https://java.com/en/download/help/download_options.xml). This will be used for local testing of AppSync APIs
 
 ## Installation
 
 Install the Amplify CLI using the following command:
 
-`npm install -g @aws-amplify/cli`
+```
+npm install -g @aws-amplify/cli
+```
 
-## Configuring Amplify CLI
+### Configuring Amplify CLI
 
 To configure Amplify CLI on your machine, run the following command:
 
-`amplify configure`
+```
+amplify configure
+```
 
 On running the above command, you will be asked to login to your AWS console. On logging in, Amplify CLI will create an IAM user
 
@@ -46,10 +59,10 @@ This would update/create the AWS Profile in your local machine
 Successfully set up the new user.
 ```
 
-### Initializing A New Project
+## Initialising A New Project
 
-```bash
-$ amplify init
+```
+amplify init
 ```
 
 ```
@@ -71,14 +84,14 @@ Now, the AWS Amplify CLI has iniatilized a new project & you will see a new fold
 
 To view the status of the amplify project at any time, you can run the Amplify `status` command:
 
-```sh
-$ amplify status
+```
+amplify status
 ```
 
-### Adding a GraphQL API
+## Adding a GraphQL API
 
 ```sh
-$ amplify add api
+amplify add api
 
 ? Please select from one of the above mentioned services: GraphQL
 ? Provide API name: ConferenceAPI
@@ -92,7 +105,7 @@ $ amplify add api
 ? Do you want to edit the schema now? (Y/n) Y
 ```
 
-When prompted, update the schema in the `amplify/backend/api/ConferenceAPI/schema.graphql` to the following:   
+When prompted, update the schema in the `amplify/backend/api/<api-name>/schema.graphql` to the following:   
 
 ```graphql
 type Poll @model {
@@ -100,7 +113,6 @@ type Poll @model {
   name: String!
   type: PollType!
   itemType: String
-  candidates: [Candidate] @connection
   createdAt: String
 }
 
@@ -111,13 +123,14 @@ enum PollType {
 ```
 
 The GraphQL schema will create a GraphQL type `Poll` with the following fields:
+
 * id - a non-nullable field to store the id of the poll
 * name - a non-nullable name of the poll
 * type - type of poll options (candidates), resolving to an enum with values - `image` and `text`
 * itemType - type of poll
 * createdAt - the timestamp at which the poll was created
 
-Run `amplify status` ti check the status of the application. This will now reflect the addition of the API
+Run `amplify status` to check the status of the application. This will now reflect the addition of the API
 
 Run `amplify push` to deploy the resources (API and DynamoDB tables) to the AWS cloud. Select appropriate options as shown below:
 
@@ -132,6 +145,7 @@ Run `amplify push` to deploy the resources (API and DynamoDB tables) to the AWS 
 ```
 
 The above command will provision the following resources on the AWS cloud:
+
 1. DynamoDB table - `PollTable` - a table to store all the details about the polls created as a part of the application
 2. AppSync API - a GraphQL API with pre-generated queries, mutations and subscriptions based on the graphql schema designed as mentioned above
 
@@ -141,7 +155,7 @@ Run `amplify console` to view the application in the AWS console
 
 ## Understanding Queries, Mutations and Subscriptions
 
-Amplify will auto generate queries, mutations and subscriptions for all the `@model` in the schema and can be viewed in the `/amplify/#current-cloud-backend/<name>/build/graphql.schema`
+Amplify will auto generate queries, mutations and subscriptions for all the `@model` in the schema and can be viewed in the `/amplify/#current-cloud-backend/<api-name>/build/graphql.schema`
 
 ```graphql
 type Poll {
@@ -322,7 +336,7 @@ Amplify automatically enables pagination, filtering capability for the get and l
 
 ## Understanding auto generated resolvers
 
-Amplify also auto generates resolvers for all of the queries and mutations, and can be seen under the `/amplify/#current-cloud-backend/<name>/build/resolvers/` folder 
+Amplify also auto generates resolvers for all of the queries and mutations, and can be seen under the `/amplify/#current-cloud-backend/<api-name>/build/resolvers/` folder 
 
 ## Creating a new Poll
 
@@ -362,6 +376,7 @@ mutation CreatePoll {
     id: "first-poll"
     name: "first-poll"
     type: text
+    itemType: "Poll"
   }) {
     id
     name
@@ -433,6 +448,10 @@ Run `amplify api gql-compile` to make sure the schema details are added correctl
 ## Creating Poll and Candidates
 
 Run `amplify status` to see that the API is now under `Update` status
+
+!!! tip
+    You can compile the GraphQL schema for any errors using the `amplify gql compile` command and view the compiled schema ouptput in `backend/api/<api-name>/build/schema.graphql` file
+
 Run `amplify push` to push the latest changes to AWS cloud and select the appropriate options as below:
 
 ```
@@ -626,6 +645,9 @@ The `customResources.json` file is used to define any custom resources that need
 
 ## Local mocking and testing
 
+!!! caution
+    Java is required on your development workstation to use Local Mocking in Amplify
+
 One of the best features of Amplify is the capability to mock and test the setup locally without any configuration. It creates a mock DynamoDB database which can be used to store the mock and test data. 
 
 To do so, just run the following command:
@@ -714,7 +736,113 @@ type Subscription {
 }
 ```
 
-The above will add a new subscription that gets triggered when the `upVote` mutation publishes a result. The client is subscribed to a particular poll and will get notifications of any changes because of the `upVote` mutation.
+The above will add a new subscription that gets triggered when the `upVote` mutation publishes a result. The client is subscribed to a particular poll and will get notifications of any changes because of the `upVote` mutation
 
+Push the changes using the `amplify push` command
 
+## Testing GraphQL Subscriptions
+
+You can test the GraphQL subscription in the AWS AppSync console. To open the console, run `amplify api console`, select `GrapgQL` and copy the following mutation to `upVote`:
+
+```graphql
+mutation UpVote {
+  upVote(id: "688d4bc7-500f-4a68-9f11-4d34af05ca6a") {
+    id
+  }
+}
+```
+
+Open another tab and copy the following subscription into the GraphiQL editor:
+
+```graphql
+mutation MyMutation {
+  upVote(id: "688d4bc7-500f-4a68-9f11-4d34af05ca6a") {
+    id
+  }
+}
+```
+
+!!! attention
+    Don't have any other queries/mutations in the GraphiQL editor while testing for subscriptions. Always run the subscriptions in a different editor and make sure there are no other queries/mutations
+    
+Running the `upVote` mutation will see a subscription result on the second tab
+
+## Integrating the GraphQL API with the UI code
+
+Copy the code under `src`, `public` folders and `package.json`, `postcss.config.json` and `tailwind.js` from the GitHub repo files into your `src` folder. To setup the UI project and get it up and running, run the following commands: 
+
+1. `npm install` to install all the dependencies
+2. `npm start` to start the project. The code will run on port `3000` and will you automatically be redirected to the web page. If not, hit `localhost:3000` on your browser
+
+The home page automatically lists 5 polls that have been created sorted in ascending order. Clicking on "Create New Poll" will create a new poll along with its candidates 
+
+!!! info
+    Please be noted that the UI uses the local AppSync APIs and not the deployed ones and hence shares the same mock DB that was used for mocking and testing. 
+
+### Create a new poll
+
+You can now create a poll from the UI and provide two candidates, the candidates will automatically be initiased with 0 upvotes. Open the same poll link in another tab and start upvoting a candidate there and see the true magic of real time in the first tab, where the upvotes will start reflecting!! 
+
+!!! success
+    You have successfully created a real time polling application that can be used to create, and share polls and see the results in real time!
+    
+## Polls with image candidates
+
+The poll type that we created had a type field which included two types - `text` and `image`. In the image type of polls, the end user can upload images as the candidates instead of just textual options. To do so, you will need to upload the images on to AWS and what better service than S3 to do so. 
+
+To add storage to your application, run the following command:
+
+```shell script
+amplify add storage
+``` 
+
+!!! info
+    Adding storage requires 
+    
+and enter the following when prompted:
+
+```shell script
+? Please select from one of the below mentioned services:
+    `Content (Images, audio, video, etc.)`
+? You need to add auth (Amazon Cognito) to your project in order to add storage for user files. Do you want to add auth now?
+    `Yes`
+? Do you want to use the default authentication and security configuration?
+    `Default configuration`
+? How do you want users to be able to sign in?
+    `Username`
+? Do you want to configure advanced settings?
+    `No, I am done.`
+? Please provide a friendly name for your resource that will be used to label this category in the project:
+    `PollImages`
+? Please provide bucket name:
+    `storagebucketname`
+? Who should have access:
+    `Auth and guest users`
+? What kind of access do you want for Authenticated users?
+    `create/update, read, delete`
+? What kind of access do you want for Guest users?
+    `create/update, read, delete`
+? Do you want to add a Lambda Trigger for your S3 Bucket?
+    `No`
+```
+
+To push the changes to the cloud, run the command: 
+
+```shell script
+amplify push
+```
+
+Once the update is complete, you will have an S3 bucket provisioned and the same will reflect as a folder `storage` in the project structure.
+
+Now, you will be able to upload images from the application. The react code that you copied from the GitHub repo into the `src` folder already has image uploads configured
+
+## Destroy the App
+
+!!! danger
+
+Although, the entire application uses services that have free tier, it is advisable to destory the stack if not being consumed and to do so, run the following command:
+
+```
+amplify destroy
+```
 

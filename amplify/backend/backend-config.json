@@ -16,5 +16,18 @@
 				}
 			}
 		}
+	},
+	"auth": {
+		"polltrial254fceda4": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	},
+	"storage": {
+		"imagestorage": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }
