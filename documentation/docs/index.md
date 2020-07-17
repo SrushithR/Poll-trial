@@ -862,11 +862,28 @@ You will directed to the AWS Amplify console where you will have to connect your
 
 With your latest configuration, every git push will trigger a deployment and we can see the changes live and you can achieve the true power of CICD
 
+### Adding redirects
+
+Configure the redirection rules in the Amplify console, execute the command:
+
+```shell script
+amplify configure hosting
+```
+
+This will open the Amplify console. Under the `App Settings`, select `Rewrites and redirects` section and add a new "rewrites" with the following values:
+
+```
+Source Address: </^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$)([^.]+$)/>
+Target Adress: index.js
+```
+
+The above will configure any sub path via the `index.js` file
+
 ## Destroy the App
 
 !!! danger
 
-Although, the entire application uses services that have free tier, it is advisable to destory the stack if not being consumed and to do so, run the following command:
+Although, the entire application uses services that have free tier, it is advisable to destroy the stack if not being consumed and to do so, run the following command:
 
 ```
 amplify destroy
