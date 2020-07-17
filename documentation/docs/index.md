@@ -836,6 +836,32 @@ Once the update is complete, you will have an S3 bucket provisioned and the same
 
 Now, you will be able to upload images from the application. The react code that you copied from the GitHub repo into the `src` folder already has image uploads configured
 
+## Hosting your application
+
+Now that you have built both the backend and the frontend, its time to show it to the world!
+
+### Add app hosting
+
+To add hosting to your application, run the following command:
+
+```shell script
+amplify add hosting
+```
+
+This adds the hosting resources to the backend. The command will first prompt for environment selection, either DEV or PROD. Upon completion, the CloudFormation template for the resources is placed in the amplify/backend/hosting directory.
+
+```shell script
+? Select the plugin module to execute Hosting with Amplify Console (Managed hosting with custom domains, Continuous deployment)
+? Choose a type Continuous deployment (Git-based deployments)
+? Continuous deployment is configured in the Amplify Console. Please hit enter once you connect your repository 
+```
+You will directed to the AWS Amplify console where you will have to connect your git repo to Amplify. Once the connection is established, your frontend code will start getting deployed. This may take a few minutes to complete. This will automatically deploy the code by fetching it from the Git source control connected.
+ 
+!!! tip 
+    The `amplify push` command pushes the latest backend changes to the cloud, and to a similar thing for the frontend code manually, you can execute the command: `amplify publish`
+
+With your latest configuration, every git push will trigger a deployment and we can see the changes live and you can achieve the true power of CICD
+
 ## Destroy the App
 
 !!! danger
